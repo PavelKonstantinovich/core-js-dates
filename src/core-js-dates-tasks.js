@@ -162,8 +162,31 @@ function formatDate(date) {
  * 12, 2023 => 10
  * 1, 2024 => 8
  */
-function getCountWeekendsInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountWeekendsInMonth(month, year) {
+  const fullDays = new Date(year, month, 0).getDate();
+  const firstDay = new Date(year, month - 1, 1).getDay();
+  if (fullDays === 31) {
+    if (firstDay === 0 || firstDay === 4) {
+      return 9;
+    }
+    if (firstDay === 6 || firstDay === 5) {
+      return 10;
+    }
+  }
+  if (fullDays === 30) {
+    if (firstDay === 0 || firstDay === 5) {
+      return 9;
+    }
+    if (firstDay === 6) {
+      return 10;
+    }
+  }
+  if (fullDays === 29) {
+    if (firstDay === 0 || firstDay === 6) {
+      return 9;
+    }
+  }
+  return 8;
 }
 
 /**
@@ -179,8 +202,14 @@ function getCountWeekendsInMonth(/* month, year */) {
  * Date(2024, 0, 31) => 5
  * Date(2024, 1, 23) => 8
  */
-function getWeekNumberByDate(/* date */) {
-  throw new Error('Not implemented');
+function getWeekNumberByDate(date) {
+  const year = date.getFullYear();
+  const firstDay = new Date(year, 0).getDay();
+  const days = (Date.parse(date) - Date.parse(new Date(year, 0))) / 86400000;
+  if (firstDay === 0) {
+    return Math.ceil((days + 7) / 7);
+  }
+  return Math.ceil((days + firstDay) / 7);
 }
 
 /**
@@ -209,8 +238,18 @@ function getNextFridayThe13th(/* date */) {
  * Date(2024, 5, 1) => 2
  * Date(2024, 10, 10) => 4
  */
-function getQuarter(/* date */) {
-  throw new Error('Not implemented');
+function getQuarter(date) {
+  const month = date.getMonth();
+  if (month === 0 || month === 1 || month === 2) {
+    return 1;
+  }
+  if (month === 3 || month === 4 || month === 5) {
+    return 2;
+  }
+  if (month === 6 || month === 7 || month === 8) {
+    return 3;
+  }
+  return 4;
 }
 
 /**
@@ -247,8 +286,8 @@ function getWorkSchedule(/* period, countWorkDays, countOffDays */) {
  * Date(2022, 2, 1) => false
  * Date(2020, 2, 1) => true
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  return date.getFullYear() % 4 === 0;
 }
 
 module.exports = {
